@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Clean Hub &#8212; &#1074;&#1080;&#1111;&#1079;&#1085;&#1072; &#1093;&#1110;&#1084;&#1095;&#1080;&#1089;&#1090;&#1082;&#1072; &#1091; &#1050;&#1080;&#1108;&#1074;&#1110;</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1E6FD9; --blue-d:#155bb8; --blue-soft:#EAF3FE;
+  --mint:#12B886; --mint-d:#0c8f6a; --mint-soft:#E6FAF3;
+  --ink:#0F2233; --slate:#5B6B7B; --line:#E6ECF2; --bg:#F4F8FC;
+  --amber:#F59E0B; --amber-soft:#FEF3E2; --red:#E5484D;
+  --shadow:0 12px 40px rgba(20,60,120,.12);
+  --shadow-sm:0 4px 14px rgba(20,60,120,.08);
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,sans-serif;font-size:15px;line-height:1.5;overscroll-behavior-y:none}
+body{padding-bottom:96px}
+img{max-width:100%;display:block}
+.mono{font-family:'Manrope',sans-serif}
+.wrap{max-width:600px;margin:0 auto;padding:0 14px}
+
+/* HERO */
+.hero{background:linear-gradient(155deg,#1E6FD9 0%,#155bb8 60%,#0c8f6a 140%);color:#fff;padding:20px 0 78px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%);border-radius:50%}
+.brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;letter-spacing:.02em}
+.brand .dot{width:34px;height:34px;border-radius:10px;background:#fff;color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:19px}
+.badges{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 12px}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600;backdrop-filter:blur(4px)}
+.hero h1{font-family:'Manrope';font-weight:800;font-size:26px;line-height:1.18;margin-bottom:8px}
+.hero p.sub{font-size:14px;opacity:.92;max-width:90%}
+.rating{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:13px;font-weight:600}
+.stars{color:#FFD43B;letter-spacing:1px}
+
+/* CALC CARD */
+.calc{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;margin-top:-58px;position:relative;z-index:5}
+.calc-top{background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;padding:16px 18px;display:flex;align-items:center;gap:11px}
+.calc-top .ic{font-size:24px}
+.calc-top h3{font-size:17px;font-weight:800;font-family:'Manrope'}
+.calc-top .s{font-size:12px;opacity:.88}
+.calc-body{padding:16px 16px 18px}
+
+.seg-lbl{font-size:12px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.04em;margin:2px 0 8px}
+.seg{display:flex;gap:8px;margin-bottom:14px}
+.seg button{flex:1;height:46px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-weight:700;font-size:13.5px;color:var(--slate);cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.seg button small{font-weight:600;font-size:11px;opacity:.8}
+.seg button.on{border-color:var(--blue);background:var(--blue-soft);color:var(--blue)}
+.seg.urg button.on{border-color:var(--amber);background:var(--amber-soft);color:#B4740B}
+
+/* category accordions */
+.cat{border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;background:#fff}
+.cat-h{display:flex;align-items:center;gap:11px;padding:13px 14px;cursor:pointer;user-select:none}
+.cat-h .cic{width:34px;height:34px;border-radius:9px;background:var(--blue-soft);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cat-h .ct{flex:1}
+.cat-h .ct b{font-size:14.5px;font-weight:700}
+.cat-h .ct span{font-size:11.5px;color:var(--slate)}
+.cat-h .cnt{background:var(--mint);color:#fff;font-size:11px;font-weight:800;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:none;align-items:center;justify-content:center}
+.cat-h .cnt.show{display:flex}
+.cat-h .chev{color:#9AA7B6;transition:.25s;font-size:13px}
+.cat.open .chev{transform:rotate(180deg)}
+.cat-list{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--line)}
+.row .rn{flex:1;font-size:13.5px;font-weight:500}
+.row .rp{font-size:12.5px;color:#9AA7B6;font-weight:600;min-width:66px;text-align:right}
+.row .rp.act{color:var(--mint-d)}
+.step{display:flex;align-items:center;gap:2px}
+.step button{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-size:17px;font-weight:700;color:var(--blue);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.step button:active{background:var(--blue-soft)}
+.step .q{min-width:26px;text-align:center;font-weight:800;font-size:15px}
+.step.m2 input{width:46px;height:30px;border:1.5px solid var(--line);border-radius:8px;text-align:center;font-weight:700;font-size:14px;font-family:'Manrope'}
+
+/* progress to min order */
+.prog-wrap{margin:14px 0 4px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.prog-txt{font-size:12.5px;font-weight:600;color:var(--slate);margin-bottom:8px;display:flex;justify-content:space-between}
+.prog-txt b{color:var(--ink)}
+.bar{height:8px;background:#E3EAF1;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--blue));border-radius:999px;transition:width .5s cubic-bezier(.4,1.3,.5,1)}
+.prog-hint{font-size:11.5px;margin-top:7px;font-weight:600}
+.prog-hint.ok{color:var(--mint-d)}
+.prog-hint.warn{color:var(--amber)}
+
+/* bundle suggestion */
+.bundle{margin-top:12px;background:linear-gradient(135deg,var(--mint-soft),#fff);border:1.5px dashed var(--mint);border-radius:14px;padding:13px 14px;display:none;gap:10px;align-items:center}
+.bundle.show{display:flex}
+.bundle .bic{font-size:22px}
+.bundle .bt{flex:1;font-size:12.8px;line-height:1.4}
+.bundle .bt b{color:var(--mint-d)}
+
+/* promo */
+.promo{margin-top:12px;display:flex;gap:8px}
+.promo input{flex:1;height:44px;border:1.5px solid var(--line);border-radius:11px;padding:0 13px;font-size:13.5px;font-family:'Inter'}
+.promo input:focus{outline:none;border-color:var(--blue)}
+.promo button{padding:0 16px;height:44px;border-radius:11px;border:none;background:var(--ink);color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+.promo-msg{font-size:11.5px;font-weight:600;margin-top:6px;display:none}
+.promo-msg.ok{color:var(--mint-d);display:block}
+.promo-msg.bad{color:var(--red);display:block}
+
+/* total */
+.out{margin-top:14px;background:var(--mint-soft);border:1px solid #BFEFDF;border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.out .lbl{font-size:12px;color:var(--mint-d);font-weight:700}
+.out .old{font-size:13px;color:#9AA7B6;text-decoration:line-through;margin-right:6px}
+.out .val{font-family:'Manrope';font-weight:800;font-size:28px}
+.note{font-size:11px;color:var(--slate);margin-top:10px;line-height:1.5}
+.flag{font-size:11px;color:#9AA7B6;text-align:center;padding:10px;background:#FAFCFE;border-top:1px solid var(--line)}
+
+/* section */
+section.blk{padding:26px 0 4px}
+h2.st{font-family:'Manrope';font-weight:800;font-size:20px;margin-bottom:4px}
+.sub2{font-size:13px;color:var(--slate);margin-bottom:16px}
+
+/* live social proof toast */
+#toast{position:fixed;left:12px;right:12px;bottom:88px;max-width:576px;margin:0 auto;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:11px;transform:translateY(160%);opacity:0;transition:.45s cubic-bezier(.3,1.2,.4,1);z-index:80}
+#toast.show{transform:translateY(0);opacity:1}
+#toast .av{width:34px;height:34px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+#toast .tt{flex:1;font-size:12.5px;line-height:1.35}
+#toast .tt b{font-weight:700}
+#toast .tt span{color:var(--slate);font-size:11px}
+
+/* slots countdown */
+.slots{background:linear-gradient(135deg,#FFF7EC,#fff);border:1px solid #F7DCA6;border-radius:14px;padding:13px 15px;margin-top:14px;display:flex;align-items:center;gap:12px}
+.slots .sic{font-size:22px}
+.slots .stx{flex:1;font-size:12.8px;line-height:1.4}
+.slots .stx b{color:#B4740B}
+.slots .timer{font-family:'Manrope';font-weight:800;font-size:16px;color:#B4740B;background:#FEF0D3;padding:5px 9px;border-radius:9px;white-space:nowrap}
+
+/* before/after slider */
+.ba{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-sm);aspect-ratio:4/3;background:#dfe7ee;user-select:none;touch-action:none}
+.ba .side{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .after{}
+.ba .before{clip-path:inset(0 50% 0 0)}
+.ba .tag{position:absolute;top:12px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(0,0,0,.35);backdrop-filter:blur(3px)}
+.ba .tag.l{left:12px}.ba .tag.r{right:12px}
+.ba .handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.1);cursor:ew-resize}
+.ba .knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:15px}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.gal img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .15s}
+.gal img:active{transform:scale(.97)}
+#lb{position:fixed;inset:0;background:rgba(8,18,28,.92);z-index:130;display:none;align-items:center;justify-content:center;padding:16px}
+#lb.show{display:flex}
+#lb img{max-width:100%;max-height:86vh;border-radius:14px}
+#lb .x{position:absolute;top:16px;right:18px;color:#fff;font-size:30px;font-weight:300;cursor:pointer;line-height:1}
+
+/* steps */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stepc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm)}
+.stepc .n{width:26px;height:26px;border-radius:8px;background:var(--blue);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.stepc b{font-size:14px;display:block;margin-bottom:3px}
+.stepc p{font-size:12px;color:var(--slate);line-height:1.4}
+
+/* packages */
+.pk{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:11px;box-shadow:var(--shadow-sm);position:relative}
+.pk.hit{border-color:var(--mint);border-width:1.5px}
+.pk .tag{position:absolute;top:-9px;right:14px;background:var(--mint);color:#fff;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:999px}
+.pk h4{font-family:'Manrope';font-size:16px;font-weight:800;margin-bottom:2px}
+.pk .pd{font-size:12.5px;color:var(--slate);margin-bottom:8px}
+.pk .pr{font-family:'Manrope';font-weight:800;font-size:22px;color:var(--blue);margin-bottom:9px}
+.pk .pr span{font-size:12px;color:var(--slate);font-weight:600}
+.pk ul{list-style:none;font-size:12.5px;color:var(--ink)}
+.pk li{padding:3px 0 3px 22px;position:relative}
+.pk li::before{content:"&#10003;";position:absolute;left:0;color:var(--mint);font-weight:800}
+.pk .btn{margin-top:10px;width:100%;height:42px;border-radius:11px;border:none;background:var(--blue);color:#fff;font-weight:700;font-size:13.5px;cursor:pointer}
+
+/* reviews */
+.rev{display:flex;gap:11px;overflow-x:auto;padding:4px 0 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.rev::-webkit-scrollbar{display:none}
+.revc{min-width:80%;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow-sm)}
+.revc .rs{color:#FFD43B;font-size:13px;letter-spacing:1px;margin-bottom:6px}
+.revc p{font-size:13px;line-height:1.5;margin-bottom:10px}
+.revc .who{display:flex;align-items:center;gap:9px}
+.revc .who .av{width:32px;height:32px;border-radius:50%;background:var(--blue-soft);color:var(--blue);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+.revc .who b{font-size:12.5px;display:block}
+.revc .who span{font-size:11px;color:var(--slate)}
+
+/* trust strip */
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.tc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;box-shadow:var(--shadow-sm)}
+.tc b{font-family:'Manrope';font-size:20px;color:var(--blue);display:block}
+.tc span{font-size:11.5px;color:var(--slate)}
+
+/* faq */
+.faq{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.faq summary{padding:13px 15px;font-weight:700;font-size:13.5px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--blue);font-weight:800;font-size:18px}
+.faq[open] summary::after{content:"&#8722;"}
+.faq p{padding:0 15px 14px;font-size:13px;color:var(--slate);line-height:1.5}
+
+/* sticky bottom bar */
+.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:90}
+.sticky .in{max-width:600px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.sticky .tot{flex:1}
+.sticky .tot small{font-size:11px;color:var(--slate);font-weight:600;display:block}
+.sticky .tot b{font-family:'Manrope';font-size:22px;font-weight:800}
+.sticky .cta{padding:0 22px;height:50px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--mint-d));color:#fff;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(18,184,134,.35);white-space:nowrap}
+.sticky .cta:active{transform:scale(.97)}
+
+.foot{text-align:center;padding:20px 14px 8px;font-size:11.5px;color:#9AA7B6;line-height:1.6}
+
+/* telegram contact buttons */
+.tg-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:52px;border-radius:14px;background:linear-gradient(135deg,#2AABEE,#229ED9);color:#fff;font-weight:700;font-size:15px;text-decoration:none;margin-bottom:10px;box-shadow:0 6px 18px rgba(34,158,217,.32)}
+.tg-btn:active{transform:scale(.98)}
+.tg-btn .ic{font-size:19px}
+.tg-btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:var(--shadow-sm)}
+
+/* order sheet (modal) */
+#sheet{position:fixed;inset:0;background:rgba(15,34,51,.5);z-index:120;display:none;align-items:flex-end;justify-content:center}
+#sheet.show{display:flex}
+.sheet-c{background:#fff;width:100%;max-width:600px;border-radius:22px 22px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto;animation:up .3s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-c h3{font-family:'Manrope';font-size:18px;font-weight:800;margin-bottom:4px}
+.sheet-c .sd{font-size:12.5px;color:var(--slate);margin-bottom:14px}
+.summ{background:var(--bg);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px}
+.summ .sr{display:flex;justify-content:space-between;padding:3px 0}
+.summ .sr.tt{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:800;font-family:'Manrope';font-size:16px}
+.fld{margin-bottom:11px}
+.fld label{font-size:12px;font-weight:700;color:var(--slate);display:block;margin-bottom:5px}
+.fld input,.fld textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px 13px;font-size:14px;font-family:'Inter'}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--blue)}
+.sheet-c .send{width:100%;height:52px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--mint-d));color:#fff;font-weight:800;font-size:16px;cursor:pointer;margin-top:6px}
+.sheet-c .cancel{width:100%;height:44px;border:none;background:none;color:var(--slate);font-weight:600;font-size:13.5px;margin-top:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="dot">&#10022;</span> CLEAN HUB</div>
+    <div class="badges">
+      <span class="badge">&#9889; &#1042;&#1080;&#1111;&#1079;&#1076; &#1076;&#1077;&#1085;&#1100;-&#1091;-&#1076;&#1077;&#1085;&#1100;</span>
+      <span class="badge">&#127807; &#1045;&#1082;&#1086;-&#1093;&#1110;&#1084;&#1110;&#1103;</span>
+      <span class="badge">&#128737; &#1043;&#1072;&#1088;&#1072;&#1085;&#1090;&#1110;&#1103; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;&#1091;</span>
+    </div>
+    <h1>&#1063;&#1080;&#1089;&#1090;&#1080;&#1081; &#1076;&#1080;&#1074;&#1072;&#1085; &#1110; &#1084;&#1072;&#1090;&#1088;&#1072;&#1094; &#8212; &#1074;&#1078;&#1077; &#1089;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110;</h1>
+    <p class="sub">&#1042;&#1080;&#1111;&#1079;&#1085;&#1072; &#1093;&#1110;&#1084;&#1095;&#1080;&#1089;&#1090;&#1082;&#1072; &#1084;'&#1103;&#1082;&#1080;&#1093; &#1084;&#1077;&#1073;&#1083;&#1110;&#1074;, &#1082;&#1080;&#1083;&#1080;&#1084;&#1110;&#1074;, &#1084;&#1072;&#1090;&#1088;&#1072;&#1094;&#1110;&#1074; &#1090;&#1072; &#1096;&#1090;&#1086;&#1088; &#1091; &#1050;&#1080;&#1108;&#1074;&#1110;. &#1041;&#1077;&#1079;&#1087;&#1077;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1076;&#1110;&#1090;&#1077;&#1081; &#1110; &#1090;&#1074;&#1072;&#1088;&#1080;&#1085;. &#1053;&#1077; &#1087;&#1088;&#1080;&#1073;&#1077;&#1088;&#1077;&#1084;&#1086; &#1087;&#1083;&#1103;&#1084;&#1091; &#8212; &#1087;&#1086;&#1074;&#1077;&#1088;&#1085;&#1077;&#1084;&#1086; &#1075;&#1088;&#1086;&#1096;&#1110;.</p>
+    <div class="rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.9 &#183; <b>2 500+</b> &#1079;&#1072;&#1084;&#1086;&#1074;&#1083;&#1077;&#1085;&#1100; &#183; &#1089;&#1086;&#1093;&#1085;&#1077; &#1079;&#1072; 2&#8211;4 &#1075;&#1086;&#1076;</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- CALCULATOR -->
+  <div class="calc" id="calc">
+    <div class="calc-top">
+      <span class="ic">&#129518;</span>
+      <div><h3>&#1050;&#1072;&#1083;&#1100;&#1082;&#1091;&#1083;&#1103;&#1090;&#1086;&#1088; &#1074;&#1072;&#1088;&#1090;&#1086;&#1089;&#1090;&#1110;</h3><div class="s">&#1044;&#1110;&#1079;&#1085;&#1072;&#1081;&#1090;&#1077;&#1089;&#1100; &#1094;&#1110;&#1085;&#1091; &#1076;&#1086; &#1087;&#1088;&#1080;&#1111;&#1079;&#1076;&#1091; &#1084;&#1072;&#1081;&#1089;&#1090;&#1088;&#1072;</div></div>
+    </div>
+    <div class="calc-body">
+      <div class="seg-lbl">&#1058;&#1072;&#1088;&#1080;&#1092;</div>
+      <div class="seg" id="tariff">
+        <button data-t="s" class="on">&#1057;&#1090;&#1072;&#1085;&#1076;&#1072;&#1088;&#1090;<small>&#1073;&#1072;&#1079;&#1086;&#1074;&#1072; &#1095;&#1080;&#1089;&#1090;&#1082;&#1072;</small></button>
+        <button data-t="p">&#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084;<small>&#1110;&#1079; &#1089;&#1091;&#1096;&#1082;&#1086;&#1102; &#183; USA</small></button>
+      </div>
+
+      <div class="seg-lbl">&#1058;&#1077;&#1088;&#1084;&#1110;&#1085;&#1086;&#1074;&#1110;&#1089;&#1090;&#1100;</div>
+      <div class="seg urg" id="urg">
+        <button data-u="0" class="on">&#1047;&#1088;&#1091;&#1095;&#1085;&#1080;&#1081; &#1076;&#1077;&#1085;&#1100;<small>&#1073;&#1077;&#1079; &#1085;&#1072;&#1094;&#1110;&#1085;&#1082;&#1080;</small></button>
+        <button data-u="1">&#1057;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110;<small>+25%</small></button>
+      </div>
+
+      <div class="seg-lbl">&#1054;&#1073;&#1077;&#1088;&#1110;&#1090;&#1100; &#1087;&#1086;&#1079;&#1080;&#1094;&#1110;&#1111; &#1076;&#1083;&#1103; &#1095;&#1080;&#1089;&#1090;&#1082;&#1080;</div>
+      <div id="cats"></div>
+
+      <!-- gamified progress to min order -->
+      <div class="prog-wrap">
+        <div class="prog-txt"><span>&#1044;&#1086; &#1084;&#1110;&#1085;&#1110;&#1084;&#1072;&#1083;&#1100;&#1085;&#1086;&#1075;&#1086; &#1079;&#1072;&#1084;&#1086;&#1074;&#1083;&#1077;&#1085;&#1085;&#1103;</span><b id="progVal">0 / 2 300 &#8372;</b></div>
+        <div class="bar"><i id="progBar"></i></div>
+        <div class="prog-hint warn" id="progHint">&#1044;&#1086;&#1076;&#1072;&#1081;&#1090;&#1077; &#1087;&#1086;&#1079;&#1080;&#1094;&#1110;&#1081; &#1085;&#1072; 2 300 &#8372; &#8212; &#1110; &#1084;&#1080; &#1074;&#1080;&#1111;&#1078;&#1076;&#1078;&#1072;&#1108;&#1084;&#1086; &#128656;</div>
+      </div>
+
+      <!-- smart bundle suggestion -->
+      <div class="bundle" id="bundle">
+        <span class="bic">&#128161;</span>
+        <div class="bt" id="bundleTxt"></div>
+      </div>
+
+      <!-- promo code -->
+      <div class="promo">
+        <input id="promo" placeholder="&#1055;&#1088;&#1086;&#1084;&#1086;&#1082;&#1086;&#1076; &#1072;&#1073;&#1086; &#1088;&#1077;&#1092;-&#1082;&#1086;&#1076;" autocomplete="off">
+        <button id="promoBtn">&#1047;&#1072;&#1089;&#1090;&#1086;&#1089;&#1091;&#1074;&#1072;&#1090;&#1080;</button>
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
+
+      <div class="out">
+        <span class="lbl">&#1056;&#1072;&#1079;&#1086;&#1084;</span>
+        <div><span class="old" id="oldPrice" style="display:none"></span><span class="val mono" id="total">0 &#8372;</span></div>
+      </div>
+      <div class="note">&#1041;&#1077;&#1079;&#1082;&#1086;&#1096;&#1090;&#1086;&#1074;&#1085;&#1086;: &#1074;&#1080;&#1111;&#1079;&#1076;, &#1076;&#1110;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1082;&#1072;, &#1074;&#1072;&#1082;&#1091;&#1091;&#1084;&#1085;&#1072; &#1095;&#1080;&#1089;&#1090;&#1082;&#1072; &#1090;&#1072; &#1074;&#1080;&#1074;&#1077;&#1076;&#1077;&#1085;&#1085;&#1103; &#1087;&#1083;&#1103;&#1084;. &#1052;&#1110;&#1085;&#1110;&#1084;&#1072;&#1083;&#1100;&#1085;&#1077; &#1079;&#1072;&#1084;&#1086;&#1074;&#1083;&#1077;&#1085;&#1085;&#1103; 2 300 &#8372;. &#1058;&#1086;&#1095;&#1085;&#1072; &#1094;&#1110;&#1085;&#1072; &#8212; &#1087;&#1110;&#1089;&#1083;&#1103; &#1086;&#1075;&#1083;&#1103;&#1076;&#1091;. &#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084; &#8212; &#1110;&#1079; &#1089;&#1091;&#1096;&#1082;&#1086;&#1102; &#1090;&#1072; &#1079;&#1072;&#1093;&#1080;&#1089;&#1090;&#1086;&#1084; USA.</div>
+    </div>
+    <div class="flag">&#127482;&#127462; &#1062;&#1110;&#1085;&#1080; &#1091; &#1075;&#1088;&#1080;&#1074;&#1085;&#1103;&#1093; &#183; &#1084;&#1072;&#1081;&#1089;&#1090;&#1088;&#1080; &#1085;&#1072; &#1083;&#1110;&#1085;&#1110;&#1111; &#1097;&#1086;&#1076;&#1085;&#1103; 8:00&#8211;21:00</div>
+  </div>
+
+  <!-- slots countdown -->
+  <div class="slots">
+    <span class="sic">&#128293;</span>
+    <div class="stx">&#1047;&#1072;&#1083;&#1080;&#1096;&#1080;&#1083;&#1086;&#1089;&#1100; <b id="slotsN">3 &#1089;&#1083;&#1086;&#1090;&#1080;</b> &#1085;&#1072; &#1074;&#1080;&#1111;&#1079;&#1076; <b>&#1089;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110;</b>. &#1041;&#1088;&#1086;&#1085;&#1100; &#1079;&#1072;&#1082;&#1088;&#1080;&#1108;&#1090;&#1100;&#1089;&#1103; &#1095;&#1077;&#1088;&#1077;&#1079;:</div>
+    <div class="timer mono" id="timer">--:--</div>
+  </div>
+
+  <!-- before/after -->
+  <section class="blk">
+    <h2 class="st">&#1042;&#1080;&#1076;&#1085;&#1086; &#1088;&#1110;&#1079;&#1085;&#1080;&#1094;&#1102;</h2>
+    <p class="sub2">&#1055;&#1086;&#1090;&#1103;&#1075;&#1085;&#1110;&#1090;&#1100; &#1087;&#1086;&#1074;&#1079;&#1091;&#1085;&#1086;&#1082; &#8212; &#1076;&#1086; &#1110; &#1087;&#1110;&#1089;&#1083;&#1103; &#1088;&#1077;&#1072;&#1083;&#1100;&#1085;&#1086;&#1111; &#1088;&#1086;&#1073;&#1086;&#1090;&#1080; Clean Hub.</p>
+    <div class="ba" id="ba">
+      <img class="side after" src="assets/after.jpg" alt="&#1055;&#1110;&#1089;&#1083;&#1103; &#1095;&#1080;&#1089;&#1090;&#1082;&#1080;" draggable="false">
+      <img class="side before" id="baBefore" src="assets/before.jpg" alt="&#1044;&#1086; &#1095;&#1080;&#1089;&#1090;&#1082;&#1080;" draggable="false">
+      <div class="tag l">&#1044;&#1054;</div><div class="tag r">&#1055;&#1030;&#1057;&#1051;&#1071; &#10024;</div>
+      <div class="handle" id="baHandle"><div class="knob">&#8644;</div></div>
+    </div>
+  </section>
+
+  <!-- gallery -->
+  <section class="blk">
+    <h2 class="st">&#1053;&#1072;&#1096;&#1110; &#1088;&#1086;&#1073;&#1086;&#1090;&#1080;</h2>
+    <p class="sub2">&#1056;&#1077;&#1072;&#1083;&#1100;&#1085;&#1110; &#1092;&#1086;&#1090;&#1086; &#1079; &#1074;&#1080;&#1111;&#1079;&#1076;&#1110;&#1074;. &#1053;&#1072;&#1090;&#1080;&#1089;&#1085;&#1110;&#1090;&#1100;, &#1097;&#1086;&#1073; &#1079;&#1073;&#1110;&#1083;&#1100;&#1096;&#1080;&#1090;&#1080;.</p>
+    <div class="gal" id="gal">
+      <img src="assets/work-1.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 1" loading="lazy">
+      <img src="assets/work-2.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 2" loading="lazy">
+      <img src="assets/work-3.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 3" loading="lazy">
+      <img src="assets/work-4.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 4" loading="lazy">
+      <img src="assets/work-5.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 5" loading="lazy">
+      <img src="assets/work-6.jpg" alt="&#1056;&#1086;&#1073;&#1086;&#1090;&#1072; Clean Hub 6" loading="lazy">
+    </div>
+  </section>
+
+  <!-- how it works -->
+  <section class="blk">
+    <h2 class="st">&#1042;&#1110;&#1076; &#1079;&#1072;&#1103;&#1074;&#1082;&#1080; &#1076;&#1086; &#1095;&#1080;&#1089;&#1090;&#1086;&#1090;&#1080; &#8212; 4 &#1082;&#1088;&#1086;&#1082;&#1080;</h2>
+    <p class="sub2">&#1064;&#1074;&#1080;&#1076;&#1082;&#1086;, &#1087;&#1088;&#1086;&#1079;&#1086;&#1088;&#1086;, &#1079; &#1092;&#1086;&#1090;&#1086; &#1076;&#1086;/&#1087;&#1110;&#1089;&#1083;&#1103;.</p>
+    <div class="steps">
+      <div class="stepc"><div class="n">1</div><b>&#1047;&#1072;&#1103;&#1074;&#1082;&#1072;</b><p>&#1055;&#1086;&#1088;&#1072;&#1093;&#1091;&#1081;&#1090;&#1077; &#1094;&#1110;&#1085;&#1091; &#1072;&#1073;&#1086; &#1083;&#1080;&#1096;&#1110;&#1090;&#1100; &#1085;&#1086;&#1084;&#1077;&#1088; &#8212; &#1087;&#1077;&#1088;&#1077;&#1076;&#1079;&#1074;&#1086;&#1085;&#1080;&#1084;&#1086; &#1079;&#1072; 15 &#1093;&#1074;.</p></div>
+      <div class="stepc"><div class="n">2</div><b>&#1042;&#1080;&#1111;&#1079;&#1076; &#1084;&#1072;&#1081;&#1089;&#1090;&#1088;&#1072;</b><p>&#1057;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110; &#1072;&#1073;&#1086; &#1079;&#1072;&#1074;&#1090;&#1088;&#1072; &#1091; &#1079;&#1088;&#1091;&#1095;&#1085;&#1080;&#1081; &#1095;&#1072;&#1089; &#1079;&#1110; &#1089;&#1074;&#1086;&#1111;&#1084; &#1086;&#1073;&#1083;&#1072;&#1076;&#1085;&#1072;&#1085;&#1085;&#1103;&#1084;.</p></div>
+      <div class="stepc"><div class="n">3</div><b>&#1063;&#1080;&#1089;&#1090;&#1082;&#1072;</b><p>&#1045;&#1082;&#1086;-&#1079;&#1072;&#1089;&#1086;&#1073;&#1080;, &#1087;&#1088;&#1086;&#1092;&#1077;&#1082;&#1089;&#1090;&#1088;&#1072;&#1082;&#1090;&#1086;&#1088;. &#1041;&#1077;&#1079;&#1087;&#1077;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1076;&#1110;&#1090;&#1077;&#1081; &#1110; &#1090;&#1074;&#1072;&#1088;&#1080;&#1085;.</p></div>
+      <div class="stepc"><div class="n">4</div><b>&#1043;&#1086;&#1090;&#1086;&#1074;&#1086;</b><p>&#1057;&#1086;&#1093;&#1085;&#1077; &#1079;&#1072; 2&#8211;4 &#1075;&#1086;&#1076;. &#1043;&#1072;&#1088;&#1072;&#1085;&#1090;&#1110;&#1103; &#1090;&#1072; &#1092;&#1086;&#1090;&#1086; &#1076;&#1086;/&#1087;&#1110;&#1089;&#1083;&#1103;.</p></div>
+    </div>
+  </section>
+
+  <!-- packages -->
+  <section class="blk">
+    <h2 class="st">&#1042;&#1080;&#1075;&#1110;&#1076;&#1085;&#1110;&#1096;&#1077; &#8212; &#1082;&#1086;&#1084;&#1087;&#1083;&#1077;&#1082;&#1089;&#1086;&#1084;</h2>
+    <p class="sub2">&#1047;&#1073;&#1077;&#1088;&#1110;&#1090;&#1100; &#1082;&#1110;&#1083;&#1100;&#1082;&#1072; &#1074;&#1080;&#1088;&#1086;&#1073;&#1110;&#1074; &#1074; &#1086;&#1076;&#1080;&#1085; &#1074;&#1080;&#1111;&#1079;&#1076; &#1090;&#1072; &#1077;&#1082;&#1086;&#1085;&#1086;&#1084;&#1090;&#1077;.</p>
+    <div class="pk"><h4>&#1045;&#1082;&#1089;&#1087;&#1088;&#1077;&#1089;</h4><div class="pd">&#1058;&#1077;&#1088;&#1084;&#1110;&#1085;&#1086;&#1074;&#1086; &#1087;&#1088;&#1080;&#1073;&#1088;&#1072;&#1090;&#1080; &#1089;&#1074;&#1110;&#1078;&#1091; &#1087;&#1083;&#1103;&#1084;&#1091; &#1095;&#1080; &#1079;&#1072;&#1087;&#1072;&#1093; &#1089;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110;.</div><div class="pr mono">&#1074;&#1110;&#1076; 2 300 &#8372;</div><ul><li>1 &#1074;&#1080;&#1088;&#1110;&#1073; &#1091; &#1076;&#1077;&#1085;&#1100; &#1079;&#1074;&#1077;&#1088;&#1085;&#1077;&#1085;&#1085;&#1103;</li><li>&#1042;&#1080;&#1074;&#1077;&#1076;&#1077;&#1085;&#1085;&#1103; &#1087;&#1083;&#1103;&#1084;&#1080;</li><li>&#1045;&#1082;&#1089;&#1087;&#1088;&#1077;&#1089;-&#1089;&#1091;&#1096;&#1082;&#1072;</li></ul><button class="btn" data-pk="&#1045;&#1082;&#1089;&#1087;&#1088;&#1077;&#1089;">&#1047;&#1072;&#1084;&#1086;&#1074;&#1080;&#1090;&#1080; &#1087;&#1072;&#1082;&#1077;&#1090;</button></div>
+    <div class="pk hit"><span class="tag">&#1061;&#1030;&#1058;</span><h4>&#1057;&#1110;&#1084;'&#1103;</h4><div class="pd">&#1044;&#1080;&#1074;&#1072;&#1085; + 2 &#1082;&#1088;&#1110;&#1089;&#1083;&#1072;, &#1090;&#1072;&#1088;&#1080;&#1092; &#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084; &#1110;&#1079; &#1089;&#1091;&#1096;&#1082;&#1086;&#1102;.</div><div class="pr mono">&#1074;&#1110;&#1076; 4 900 &#8372;</div><ul><li>&#1044;&#1086; 3 &#1074;&#1080;&#1088;&#1086;&#1073;&#1110;&#1074;</li><li>&#1040;&#1085;&#1090;&#1080;&#1073;&#1072;&#1082;&#1090;&#1077;&#1088;&#1110;&#1072;&#1083;&#1100;&#1085;&#1072; &#1086;&#1073;&#1088;&#1086;&#1073;&#1082;&#1072;</li><li>&#1041;&#1077;&#1079;&#1087;&#1077;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1076;&#1110;&#1090;&#1077;&#1081;</li><li>&#1060;&#1086;&#1090;&#1086; &#1076;&#1086;/&#1087;&#1110;&#1089;&#1083;&#1103;</li></ul><button class="btn" data-pk="&#1057;&#1110;&#1084;'&#1103;">&#1047;&#1072;&#1084;&#1086;&#1074;&#1080;&#1090;&#1080; &#1087;&#1072;&#1082;&#1077;&#1090;</button></div>
+    <div class="pk"><h4>&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1083;&#1100;&#1085;&#1072;</h4><div class="pd">&#1059;&#1089;&#1103; &#1084;'&#1103;&#1082;&#1072; &#1084;&#1077;&#1073;&#1083;&#1103;, &#1084;&#1072;&#1090;&#1088;&#1072;&#1094;&#1080; &#1090;&#1072; &#1082;&#1080;&#1083;&#1080;&#1084; &#1091; &#1082;&#1074;&#1072;&#1088;&#1090;&#1080;&#1088;&#1110;.</div><div class="pr mono">&#1074;&#1110;&#1076; 6 900 &#8372;</div><ul><li>&#1044;&#1080;&#1074;&#1072;&#1085; + &#1084;&#1072;&#1090;&#1088;&#1072;&#1094;&#1080; + &#1082;&#1080;&#1083;&#1080;&#1084;</li><li>&#1057;&#1091;&#1096;&#1082;&#1072; &#1091; &#1087;&#1086;&#1076;&#1072;&#1088;&#1091;&#1085;&#1086;&#1082;</li><li>&#1047;&#1072;&#1093;&#1080;&#1089;&#1090; &#1090;&#1082;&#1072;&#1085;&#1080;&#1085;&#1080; &#8722;50%</li></ul><button class="btn" data-pk="&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1083;&#1100;&#1085;&#1072;">&#1047;&#1072;&#1084;&#1086;&#1074;&#1080;&#1090;&#1080; &#1087;&#1072;&#1082;&#1077;&#1090;</button></div>
+    <div class="pk"><h4>&#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084; &#1096;&#1082;&#1110;&#1088;&#1072;</h4><div class="pd">&#1064;&#1082;&#1110;&#1088;&#1103;&#1085;&#1110; &#1084;&#1077;&#1073;&#1083;&#1110;: &#1088;&#1086;&#1079;&#1095;&#1080;&#1085;, &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1110;&#1086;&#1085;&#1077;&#1088; &#1110; &#1079;&#1072;&#1093;&#1080;&#1089;&#1090; USA.</div><div class="pr mono">&#1074;&#1110;&#1076; 3 000 &#8372;</div><ul><li>&#1063;&#1080;&#1089;&#1090;&#1082;&#1072; &#1088;&#1086;&#1079;&#1095;&#1080;&#1085;&#1086;&#1084; USA</li><li>&#1050;&#1086;&#1085;&#1076;&#1080;&#1094;&#1110;&#1086;&#1085;&#1077;&#1088; &#1076;&#1083;&#1103; &#1096;&#1082;&#1110;&#1088;&#1080;</li><li>&#1047;&#1072;&#1093;&#1080;&#1089;&#1085;&#1077; &#1087;&#1086;&#1082;&#1088;&#1080;&#1090;&#1090;&#1103;</li></ul><button class="btn" data-pk="&#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084; &#1096;&#1082;&#1110;&#1088;&#1072;">&#1047;&#1072;&#1084;&#1086;&#1074;&#1080;&#1090;&#1080; &#1087;&#1072;&#1082;&#1077;&#1090;</button></div>
+  </section>
+
+  <!-- trust -->
+  <section class="blk">
+    <h2 class="st">&#1063;&#1086;&#1084;&#1091; Clean Hub</h2>
+    <div class="trust">
+      <div class="tc"><b>2 500+</b><span>&#1079;&#1072;&#1076;&#1086;&#1074;&#1086;&#1083;&#1077;&#1085;&#1080;&#1093; &#1082;&#1083;&#1110;&#1108;&#1085;&#1090;&#1110;&#1074;</span></div>
+      <div class="tc"><b>1 &#1076;&#1077;&#1085;&#1100;</b><span>&#1074;&#1080;&#1111;&#1079;&#1076; &#1087;&#1086; &#1050;&#1080;&#1108;&#1074;&#1091;</span></div>
+      <div class="tc"><b>100%</b><span>&#1075;&#1072;&#1088;&#1072;&#1085;&#1090;&#1110;&#1103; &#1072;&#1073;&#1086; &#1087;&#1086;&#1074;&#1077;&#1088;&#1085;&#1077;&#1085;&#1085;&#1103;</span></div>
+      <div class="tc"><b>5 &#1088;&#1086;&#1082;&#1110;&#1074;</b><span>&#1085;&#1072; &#1088;&#1080;&#1085;&#1082;&#1091;</span></div>
+    </div>
+  </section>
+
+  <!-- reviews -->
+  <section class="blk">
+    <h2 class="st">&#1065;&#1086; &#1082;&#1072;&#1078;&#1091;&#1090;&#1100; &#1082;&#1083;&#1110;&#1108;&#1085;&#1090;&#1080;</h2>
+    <p class="sub2">&#1043;&#1086;&#1088;&#1090;&#1072;&#1081;&#1090;&#1077; &#1074;&#1087;&#1088;&#1072;&#1074;&#1086; &#8594;</p>
+    <div class="rev">
+      <div class="revc"><div class="rs">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&#171;&#1050;&#1110;&#1090; &#1079;&#1072;&#1083;&#1080;&#1096;&#1080;&#1074; &#1079;&#1072;&#1087;&#1072;&#1093; &#1085;&#1072; &#1076;&#1080;&#1074;&#1072;&#1085;&#1110; &#8212; &#1087;&#1110;&#1096;&#1086;&#1074; &#1087;&#1086;&#1074;&#1085;&#1110;&#1089;&#1090;&#1102;. &#1055;&#1088;&#1080;&#1111;&#1093;&#1072;&#1083;&#1080; &#1090;&#1086;&#1075;&#1086; &#1078; &#1076;&#1085;&#1103;, &#1079;&#1072; 3 &#1075;&#1086;&#1076;&#1080;&#1085;&#1080; &#1073;&#1091;&#1083;&#1086; &#1089;&#1091;&#1093;&#1086;.&#187;</p><div class="who"><span class="av">&#1054;&#1050;</span><div><b>&#1054;&#1083;&#1100;&#1075;&#1072; &#1050;.</b><span>&#1076;&#1080;&#1074;&#1072;&#1085;, &#1054;&#1073;&#1086;&#1083;&#1086;&#1085;&#1100;</span></div></div></div>
+      <div class="revc"><div class="rs">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&#171;&#1042;&#1080;&#1074;&#1077;&#1083;&#1080; &#1087;&#1083;&#1103;&#1084;&#1091; &#1074;&#1110;&#1076; &#1074;&#1080;&#1085;&#1072;, &#1103;&#1082;&#1091; &#1085;&#1077; &#1073;&#1088;&#1072;&#1074; &#1078;&#1086;&#1076;&#1077;&#1085; &#1089;&#1087;&#1086;&#1089;&#1110;&#1073;. &#1062;&#1110;&#1085;&#1091; &#1085;&#1072;&#1079;&#1074;&#1072;&#1083;&#1080; &#1086;&#1076;&#1088;&#1072;&#1079;&#1091; &#1074; &#1082;&#1072;&#1083;&#1100;&#1082;&#1091;&#1083;&#1103;&#1090;&#1086;&#1088;&#1110; &#8212; &#1089;&#1090;&#1110;&#1083;&#1100;&#1082;&#1080; &#1081; &#1074;&#1080;&#1081;&#1096;&#1083;&#1086;.&#187;</p><div class="who"><span class="av">&#1044;&#1052;</span><div><b>&#1044;&#1084;&#1080;&#1090;&#1088;&#1086; &#1052;.</b><span>&#1082;&#1080;&#1083;&#1080;&#1084;, &#1055;&#1077;&#1095;&#1077;&#1088;&#1089;&#1100;&#1082;</span></div></div></div>
+      <div class="revc"><div class="rs">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>&#171;&#1063;&#1080;&#1089;&#1090;&#1080;&#1083;&#1080; &#1076;&#1080;&#1090;&#1103;&#1095;&#1080;&#1081; &#1076;&#1080;&#1074;&#1072;&#1085; &#1110;&#1079; &#1087;&#1083;&#1103;&#1084;&#1072;&#1084;&#1080; &#8212; &#1103;&#1082; &#1085;&#1086;&#1074;&#1080;&#1081;. &#1044;&#1091;&#1078;&#1077; &#1079;&#1072;&#1076;&#1086;&#1074;&#1086;&#1083;&#1077;&#1085;&#1110;, &#1088;&#1077;&#1082;&#1086;&#1084;&#1077;&#1085;&#1076;&#1091;&#1108;&#1084;&#1086; &#1074;&#1089;&#1110;&#1084; &#1073;&#1072;&#1090;&#1100;&#1082;&#1072;&#1084;.&#187;</p><div class="who"><span class="av">&#1030;&#1042;</span><div><b>&#1030;&#1088;&#1080;&#1085;&#1072; &#1042;.</b><span>&#1076;&#1080;&#1074;&#1072;&#1085;, &#1055;&#1086;&#1079;&#1085;&#1103;&#1082;&#1080;</span></div></div></div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="blk">
+    <h2 class="st">&#1063;&#1072;&#1089;&#1090;&#1110; &#1079;&#1072;&#1087;&#1080;&#1090;&#1072;&#1085;&#1085;&#1103;</h2>
+    <details class="faq"><summary>&#1062;&#1077; &#1085;&#1077; &#1076;&#1086;&#1088;&#1086;&#1075;&#1086;?</summary><p>&#1062;&#1110;&#1085;&#1091; &#1074;&#1080; &#1073;&#1072;&#1095;&#1080;&#1090;&#1077; &#1086;&#1076;&#1088;&#1072;&#1079;&#1091; &#1074; &#1082;&#1072;&#1083;&#1100;&#1082;&#1091;&#1083;&#1103;&#1090;&#1086;&#1088;&#1110; &#8212; &#1073;&#1077;&#1079; &#1089;&#1102;&#1088;&#1087;&#1088;&#1080;&#1079;&#1110;&#1074;. &#1050;&#1086;&#1084;&#1087;&#1083;&#1077;&#1082;&#1089;&#1086;&#1084; (&#1087;&#1072;&#1082;&#1077;&#1090;&#1080;) &#1074;&#1080;&#1093;&#1086;&#1076;&#1080;&#1090;&#1100; &#1087;&#1086;&#1084;&#1110;&#1090;&#1085;&#1086; &#1074;&#1080;&#1075;&#1110;&#1076;&#1085;&#1110;&#1096;&#1077;, &#1072; &#1095;&#1080;&#1089;&#1090;&#1082;&#1072; &#1076;&#1077;&#1096;&#1077;&#1074;&#1096;&#1072; &#1079;&#1072; &#1082;&#1091;&#1087;&#1110;&#1074;&#1083;&#1102; &#1085;&#1086;&#1074;&#1086;&#1075;&#1086; &#1076;&#1080;&#1074;&#1072;&#1085;&#1072;.</p></details>
+    <details class="faq"><summary>&#1047;&#1072; &#1089;&#1082;&#1110;&#1083;&#1100;&#1082;&#1080; &#1074;&#1080;&#1089;&#1080;&#1093;&#1072;&#1108;?</summary><p>&#1047;&#1072;&#1079;&#1074;&#1080;&#1095;&#1072;&#1081; 2&#8211;4 &#1075;&#1086;&#1076;&#1080;&#1085;&#1080; &#1079;&#1072;&#1074;&#1076;&#1103;&#1082;&#1080; &#1087;&#1088;&#1086;&#1092;&#1077;&#1089;&#1110;&#1081;&#1085;&#1110;&#1081; &#1077;&#1082;&#1089;&#1090;&#1088;&#1072;&#1082;&#1090;&#1086;&#1088;&#1085;&#1110;&#1081; &#1089;&#1091;&#1096;&#1094;&#1110; (&#1090;&#1072;&#1088;&#1080;&#1092; &#1055;&#1088;&#1077;&#1084;&#1110;&#1091;&#1084;). &#1052;&#1086;&#1078;&#1085;&#1072; &#1082;&#1086;&#1088;&#1080;&#1089;&#1090;&#1091;&#1074;&#1072;&#1090;&#1080;&#1089;&#1103; &#1090;&#1086;&#1075;&#1086; &#1078; &#1076;&#1085;&#1103;.</p></details>
+    <details class="faq"><summary>&#1055;&#1088;&#1080;&#1073;&#1077;&#1088;&#1077;&#1090;&#1077; &#1087;&#1083;&#1103;&#1084;&#1091; &#1110; &#1079;&#1072;&#1087;&#1072;&#1093;?</summary><p>&#1058;&#1072;&#1082;. &#1055;&#1086;&#1082;&#1072;&#1079;&#1091;&#1108;&#1084;&#1086; &#1092;&#1086;&#1090;&#1086; &#1076;&#1086;/&#1087;&#1110;&#1089;&#1083;&#1103;, &#1072; &#1085;&#1072; &#1088;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090; &#1076;&#1072;&#1108;&#1084;&#1086; &#1075;&#1072;&#1088;&#1072;&#1085;&#1090;&#1110;&#1102;: &#1085;&#1077; &#1087;&#1088;&#1080;&#1073;&#1077;&#1088;&#1077;&#1084;&#1086; &#8212; &#1076;&#1086;&#1088;&#1086;&#1073;&#1080;&#1084;&#1086; &#1073;&#1077;&#1079;&#1082;&#1086;&#1096;&#1090;&#1086;&#1074;&#1085;&#1086; &#1072;&#1073;&#1086; &#1087;&#1086;&#1074;&#1077;&#1088;&#1085;&#1077;&#1084;&#1086; &#1075;&#1088;&#1086;&#1096;&#1110;.</p></details>
+    <details class="faq"><summary>&#1062;&#1077; &#1073;&#1077;&#1079;&#1087;&#1077;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1076;&#1110;&#1090;&#1077;&#1081; &#1110; &#1090;&#1074;&#1072;&#1088;&#1080;&#1085;?</summary><p>&#1042;&#1080;&#1082;&#1086;&#1088;&#1080;&#1089;&#1090;&#1086;&#1074;&#1091;&#1108;&#1084;&#1086; &#1089;&#1077;&#1088;&#1090;&#1080;&#1092;&#1110;&#1082;&#1086;&#1074;&#1072;&#1085;&#1091; &#1077;&#1082;&#1086;-&#1093;&#1110;&#1084;&#1110;&#1102; &#1073;&#1077;&#1079; &#1072;&#1075;&#1088;&#1077;&#1089;&#1080;&#1074;&#1085;&#1080;&#1093; &#1079;&#1072;&#1087;&#1072;&#1093;&#1110;&#1074;. &#1041;&#1077;&#1079;&#1087;&#1077;&#1095;&#1085;&#1086; &#1076;&#1083;&#1103; &#1072;&#1083;&#1077;&#1088;&#1075;&#1110;&#1082;&#1110;&#1074;, &#1076;&#1110;&#1090;&#1077;&#1081; &#1110; &#1091;&#1083;&#1102;&#1073;&#1083;&#1077;&#1085;&#1094;&#1110;&#1074;.</p></details>
+    <details class="faq"><summary>&#1042;&#1089;&#1090;&#1080;&#1075;&#1085;&#1077;&#1090;&#1077; &#1089;&#1100;&#1086;&#1075;&#1086;&#1076;&#1085;&#1110;?</summary><p>&#1053;&#1072;&#1081;&#1095;&#1072;&#1089;&#1090;&#1110;&#1096;&#1077; &#1090;&#1072;&#1082; &#8212; &#1108; &#1089;&#1083;&#1086;&#1090;&#1080; &#1076;&#1077;&#1085;&#1100;-&#1091;-&#1076;&#1077;&#1085;&#1100;. &#1051;&#1080;&#1096;&#1110;&#1090;&#1100; &#1079;&#1072;&#1103;&#1074;&#1082;&#1091;, &#1087;&#1110;&#1076;&#1073;&#1077;&#1088;&#1077;&#1084;&#1086; &#1085;&#1072;&#1081;&#1073;&#1083;&#1080;&#1078;&#1095;&#1080;&#1081; &#1095;&#1072;&#1089;.</p></details>
+  </section>
+
+  <!-- contact -->
+  <section class="blk">
+    <h2 class="st">&#1047;&#1072;&#1083;&#1080;&#1096;&#1080;&#1083;&#1080;&#1089;&#1100; &#1087;&#1080;&#1090;&#1072;&#1085;&#1085;&#1103;?</h2>
+    <p class="sub2">&#1053;&#1072;&#1087;&#1080;&#1096;&#1110;&#1090;&#1100; &#1085;&#1072;&#1084; &#1091; Telegram &#8212; &#1074;&#1110;&#1076;&#1087;&#1086;&#1074;&#1110;&#1076;&#1072;&#1108;&#1084;&#1086; &#1096;&#1074;&#1080;&#1076;&#1082;&#1086;, &#1097;&#1086;&#1076;&#1085;&#1103; 8:00&#8211;21:00.</p>
+    <a class="tg-btn" id="tgContact" href="https://t.me/CleanHubBot" target="_blank">
+      <span class="ic">&#9992;&#65039;</span> &#1053;&#1072;&#1087;&#1080;&#1089;&#1072;&#1090;&#1080; &#1074; Telegram
+    </a>
+    <a class="tg-btn ghost" href="tel:+380980974258">&#128222; +38 (098) 097-42-58</a>
+  </section>
+
+  <div class="foot">CLEAN HUB &#183; &#1074;&#1080;&#1111;&#1079;&#1085;&#1072; &#1093;&#1110;&#1084;&#1095;&#1080;&#1089;&#1090;&#1082;&#1072; &#1084;&#1077;&#1073;&#1083;&#1110;&#1074;, &#1082;&#1080;&#1083;&#1080;&#1084;&#1110;&#1074;, &#1084;&#1072;&#1090;&#1088;&#1072;&#1094;&#1110;&#1074; &#1090;&#1072; &#1096;&#1090;&#1086;&#1088; &#1091; &#1050;&#1080;&#1108;&#1074;&#1110;.<br>+38 (098) 097-42-58 &#183; info@clean-hub.com.ua<br>&#169; 2026 Clean Hub &#183; Telegram Mini App</div>
+</div>
+
+<!-- sticky bar -->
+<div class="sticky">
+  <div class="in">
+    <div class="tot"><small>&#1056;&#1072;&#1079;&#1086;&#1084; (<span id="cntItems">0</span> &#1087;&#1086;&#1079;.)</small><b class="mono" id="stTotal">0 &#8372;</b></div>
+    <button class="cta" id="orderBtn">&#1047;&#1072;&#1084;&#1086;&#1074;&#1080;&#1090;&#1080; &#1074;&#1080;&#1111;&#1079;&#1076;</button>
+  </div>
+</div>
+
+<!-- lightbox -->
+<div id="lb"><span class="x">&#215;</span><img id="lbImg" src="" alt=""></div>
+
+<!-- social proof toast -->
+<div id="toast"><div class="av" id="toastAv">&#1054;&#1050;</div><div class="tt" id="toastTxt"></div></div>
+
+<!-- order sheet -->
+<div id="sheet">
+  <div class="sheet-c">
+    <h3>&#1054;&#1092;&#1086;&#1088;&#1084;&#1080;&#1090;&#1080; &#1079;&#1072;&#1084;&#1086;&#1074;&#1083;&#1077;&#1085;&#1085;&#1103;</h3>
+    <div class="sd">&#1055;&#1077;&#1088;&#1077;&#1076;&#1079;&#1074;&#1086;&#1085;&#1080;&#1084;&#1086; &#1079;&#1072; 15 &#1093;&#1074;&#1080;&#1083;&#1080;&#1085;, &#1087;&#1110;&#1076;&#1090;&#1074;&#1077;&#1088;&#1076;&#1080;&#1084;&#1086; &#1095;&#1072;&#1089; &#1110; &#1090;&#1086;&#1095;&#1085;&#1091; &#1094;&#1110;&#1085;&#1091;.</div>
+    <div class="summ" id="summ"></div>
+    <div class="fld"><label>&#1042;&#1072;&#1096;&#1077; &#1110;&#1084;'&#1103;</label><input id="fName" placeholder="&#1071;&#1082; &#1076;&#1086; &#1074;&#1072;&#1089; &#1079;&#1074;&#1077;&#1088;&#1090;&#1072;&#1090;&#1080;&#1089;&#1103;"></div>
+    <div class="fld"><label>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;</label><input id="fPhone" type="tel" placeholder="+38 (0__) ___-__-__"></div>
+    <div class="fld"><label>&#1040;&#1076;&#1088;&#1077;&#1089;&#1072; (&#1085;&#1077;&#1086;&#1073;&#1086;&#1074;'&#1103;&#1079;&#1082;&#1086;&#1074;&#1086;)</label><input id="fAddr" placeholder="&#1056;&#1072;&#1081;&#1086;&#1085;, &#1074;&#1091;&#1083;&#1080;&#1094;&#1103;"></div>
+    <div class="fld"><label>&#1050;&#1086;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;</label><textarea id="fComment" rows="2" placeholder="&#1065;&#1086; &#1087;&#1086;&#1095;&#1080;&#1089;&#1090;&#1080;&#1090;&#1080;, &#1087;&#1083;&#1103;&#1084;&#1080;, &#1079;&#1088;&#1091;&#1095;&#1085;&#1080;&#1081; &#1095;&#1072;&#1089;&#8230;"></textarea></div>
+    <button class="send" id="sendBtn">&#1053;&#1072;&#1076;&#1110;&#1089;&#1083;&#1072;&#1090;&#1080; &#1079;&#1072;&#1103;&#1074;&#1082;&#1091; &#8594;</button>
+    <button class="cancel" id="cancelBtn">&#1057;&#1082;&#1072;&#1089;&#1091;&#1074;&#1072;&#1090;&#1080;</button>
+  </div>
+</div>
+
+<script>
+/* ===== Telegram WebApp init ===== */
+const tg = window.Telegram?.WebApp;
+if(tg){ tg.ready(); tg.expand(); try{tg.setHeaderColor('#1E6FD9');tg.setBackgroundColor('#F4F8FC');}catch(e){} }
+const haptic = (t='light')=>{ try{ if(t==='ok') tg.HapticFeedback.notificationOccurred('success'); else tg.HapticFeedback.impactOccurred(t);}catch(e){} };
+
+/* ===== price data (from clean-hub.com.ua) ===== */
+const PRICE = {
+  sofa_straight:{s:2300,p:3000,u:'\u0448\u0442'}, sofa_corner:{s:2800,p:3500,u:'\u0448\u0442'},
+  sofa_corner3:{s:3500,p:4200,u:'\u0448\u0442'}, sofa_u:{s:4400,p:5300,u:'\u0448\u0442'},
+  armchair:{s:1300,p:1800,u:'\u0448\u0442'}, puff:{s:900,p:1200,u:'\u0448\u0442'},
+  chair_back:{s:325,p:425,u:'\u0448\u0442'}, chair:{s:175,p:275,u:'\u0448\u0442'},
+  m2:{s:2300,p:3000,u:'\u0448\u0442'}, m1:{s:1500,p:2000,u:'\u0448\u0442'},
+  mkid:{s:1200,p:1500,u:'\u0448\u0442'}, topper:{s:1900,p:2600,u:'\u0448\u0442'},
+  head:{s:1300,p:1800,u:'\u0448\u0442'}, bed:{s:2300,p:3000,u:'\u0448\u0442'},
+  syn:{s:175,p:230,u:'\u043c\u00b2'}, shaggy:{s:230,p:230,u:'\u043c\u00b2'},
+  wool:{s:350,p:350,u:'\u043c\u00b2'}, curtains:{s:115,p:115,u:'\u043c\u00b2'}, tulle:{s:80,p:80,u:'\u043c\u00b2'}
+};
+const NAMES = {
+  sofa_straight:'\u0414\u0438\u0432\u0430\u043d \u043f\u0440\u044f\u043c\u0438\u0439 / \u043a\u0443\u0445\u043e\u043d\u043d\u0438\u0439', sofa_corner:'\u041a\u0443\u0442\u043e\u0432\u0438\u0439 \u0434\u0438\u0432\u0430\u043d', sofa_corner3:'\u041a\u0443\u0442\u043e\u0432\u0438\u0439 \u0434\u0438\u0432\u0430\u043d \u0432\u0456\u0434 3 \u043c',
+  sofa_u:'\u041f-\u043f\u043e\u0434\u0456\u0431\u043d\u0438\u0439 \u0434\u0438\u0432\u0430\u043d', armchair:'\u041a\u0440\u0456\u0441\u043b\u043e', puff:'\u041f\u0443\u0444', chair_back:'\u0421\u0442\u0456\u043b\u0435\u0446\u044c \u0437\u0456 \u0441\u043f\u0438\u043d\u043a\u043e\u044e', chair:'\u0421\u0442\u0456\u043b\u0435\u0446\u044c \u0431\u0435\u0437 \u0441\u043f\u0438\u043d\u043a\u0438',
+  m2:'\u041c\u0430\u0442\u0440\u0430\u0446 \u0434\u0432\u043e\u0441\u043f\u0430\u043b\u044c\u043d\u0438\u0439', m1:'\u041c\u0430\u0442\u0440\u0430\u0446 \u043e\u0434\u043d\u043e\u0441\u043f\u0430\u043b\u044c\u043d\u0438\u0439', mkid:'\u041c\u0430\u0442\u0440\u0430\u0446 \u0434\u0438\u0442\u044f\u0447\u0438\u0439', topper:'\u0422\u043e\u043f\u0435\u0440', head:"\u0423\u0437\u0433\u043e\u043b\u0456\u0432'\u044f", bed:"\u0423\u0437\u0433\u043e\u043b\u0456\u0432'\u044f + \u043b\u0456\u0436\u043a\u043e",
+  syn:'\u041a\u0438\u043b\u0438\u043c \u0441\u0438\u043d\u0442\u0435\u0442\u0438\u043a\u0430', shaggy:'\u041a\u0438\u043b\u0438\u043c \u0448\u0435\u0433\u0433\u0456', wool:'\u041a\u0438\u043b\u0438\u043c \u0448\u0435\u0440\u0441\u0442\u044f\u043d\u0438\u0439', curtains:'\u0428\u0442\u043e\u0440\u0438', tulle:'\u0422\u044e\u043b\u044c'
+};
+const CATS = [
+  {ic:'\ud83d\udecb', t:'\u041c\'\u044f\u043a\u0456 \u043c\u0435\u0431\u043b\u0456', s:'\u0434\u0438\u0432\u0430\u043d\u0438, \u043a\u0440\u0456\u0441\u043b\u0430, \u0441\u0442\u0456\u043b\u044c\u0446\u0456', keys:['sofa_straight','sofa_corner','sofa_corner3','sofa_u','armchair','puff','chair_back','chair']},
+  {ic:'\ud83d\udecf', t:'\u041c\u0430\u0442\u0440\u0430\u0446\u0438', s:'\u0434\u0432\u043e\u0441\u043f\u0430\u043b\u044c\u043d\u0456, \u0434\u0438\u0442\u044f\u0447\u0456, \u0442\u043e\u043f\u0435\u0440\u0438', keys:['m2','m1','mkid','topper','head','bed']},
+  {ic:'\ud83e\uddff', t:'\u041a\u0438\u043b\u0438\u043c\u0438 \u0442\u0430 \u043a\u043e\u0432\u0440\u043e\u043b\u0456\u043d', s:'\u0446\u0456\u043d\u0430 \u0437\u0430 \u043c\u00b2', keys:['syn','shaggy','wool']},
+  {ic:'\ud83e\ude9f', t:'\u0428\u0442\u043e\u0440\u0438 \u0442\u0430 \u0442\u044e\u043b\u044c', s:'\u0446\u0456\u043d\u0430 \u0437\u0430 \u043c\u00b2', keys:['curtains','tulle']}
+];
+const MIN_ORDER = 2300;
+const PROMOS = { 'CLEAN10':{off:0.10,txt:'\u221210% \u043d\u0430 \u0432\u0441\u0435 \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f'}, 'FRIEND':{off:0.15,txt:'\u221215% \u0437\u0430 \u0440\u0435\u0444-\u043a\u043e\u0434\u043e\u043c \u0434\u0440\u0443\u0433\u0430'}, 'TG5':{off:0.05,txt:'\u22125% \u0437\u0430 \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f \u0443 Telegram'} };
+
+let state = { tariff:'s', urg:0, qty:{}, promo:null };
+const fmt = n => Math.round(n).toLocaleString('uk-UA');
+const $ = s => document.querySelector(s);
+
+/* ===== build categories ===== */
+function buildCats(){
+  const host = $('#cats'); host.innerHTML='';
+  CATS.forEach((c,ci)=>{
+    const cat=document.createElement('div'); cat.className='cat';
+    let rows='';
+    c.keys.forEach(k=>{
+      const isM2 = PRICE[k].u==='\u043c\u00b2';
+      rows += `<div class="row" data-k="${k}">
+        <div class="rn">${NAMES[k]}</div>
+        <div class="rp" data-rp="${k}"></div>
+        <div class="step ${isM2?'m2':''}">
+          ${isM2 ? `<input type="number" min="0" step="1" value="0" data-inp="${k}" inputmode="numeric"> <span style="font-size:11px;color:var(--slate)">\u043c\u00b2</span>`
+                 : `<button data-dec="${k}">\u2212</button><span class="q" data-q="${k}">0</span><button data-inc="${k}">+</button>`}
+        </div></div>`;
+    });
+    cat.innerHTML = `<div class="cat-h" data-cat="${ci}">
+        <span class="cic">${c.ic}</span>
+        <div class="ct"><b>${c.t}</b><span>${c.s}</span></div>
+        <span class="cnt" data-cnt="${ci}">0</span>
+        <span class="chev">\u25bc</span>
+      </div><div class="cat-list" data-list="${ci}">${rows}</div>`;
+    host.appendChild(cat);
+  });
+  // first open
+  toggleCat(0,true);
+}
+function toggleCat(ci,force){
+  const cat=$(`[data-cat="${ci}"]`).parentElement;
+  const list=$(`[data-list="${ci}"]`);
+  const open = force!==undefined ? force : !cat.classList.contains('open');
+  cat.classList.toggle('open',open);
+  list.style.maxHeight = open ? list.scrollHeight+'px' : '0';
+}
+
+/* ===== recalc ===== */
+function calc(){
+  let total=0, count=0;
+  const cnt={};
+  for(const k in PRICE){
+    const q = state.qty[k]||0;
+    if(q>0){
+      const base = PRICE[k][state.tariff];
+      total += base*q; count += (PRICE[k].u==='\u0448\u0442'? q : 1);
+      // per-category count
+      const ci = CATS.findIndex(c=>c.keys.includes(k));
+      cnt[ci]=(cnt[ci]||0)+(PRICE[k].u==='\u0448\u0442'?q:1);
+      $(`[data-rp="${k}"]`).textContent = fmt(base*q)+' \u20b4';
+      $(`[data-rp="${k}"]`).classList.add('act');
+    } else if($(`[data-rp="${k}"]`)){
+      $(`[data-rp="${k}"]`).textContent = fmt(PRICE[k][state.tariff])+' \u20b4/'+PRICE[k].u;
+      $(`[data-rp="${k}"]`).classList.remove('act');
+    }
+  }
+  // urgency
+  let subtotal = total;
+  if(state.urg) total *= 1.25;
+  // promo
+  let old=null;
+  if(state.promo && PROMOS[state.promo] && total>0){ old=total; total *= (1-PROMOS[state.promo].off); }
+
+  // update category counters
+  CATS.forEach((c,ci)=>{ const el=$(`[data-cnt="${ci}"]`); const n=cnt[ci]||0; el.textContent=n; el.classList.toggle('show',n>0); });
+
+  // totals
+  $('#total').textContent = fmt(total)+' \u20b4';
+  $('#stTotal').textContent = fmt(total)+' \u20b4';
+  $('#cntItems').textContent = count;
+  $('#oldPrice').style.display = old? 'inline':'none';
+  if(old) $('#oldPrice').textContent = fmt(old)+' \u20b4';
+
+  // progress to min order (based on subtotal before urgency)
+  const pct = Math.min(100, subtotal/MIN_ORDER*100);
+  $('#progBar').style.width = pct+'%';
+  $('#progVal').textContent = fmt(subtotal)+' / '+fmt(MIN_ORDER)+' \u20b4';
+  const hint=$('#progHint');
+  if(subtotal===0){ hint.className='prog-hint warn'; hint.textContent='\u0414\u043e\u0434\u0430\u0439\u0442\u0435 \u043f\u043e\u0437\u0438\u0446\u0456\u0439 \u043d\u0430 2 300 \u20b4 \u2014 \u0456 \u043c\u0438 \u0432\u0438\u0457\u0436\u0434\u0436\u0430\u0454\u043c\u043e \ud83d\ude90'; }
+  else if(subtotal<MIN_ORDER){ hint.className='prog-hint warn'; hint.textContent=`\u0429\u0435 ${fmt(MIN_ORDER-subtotal)} \u20b4 \u0434\u043e \u043c\u0456\u043d\u0456\u043c\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0432\u0438\u0457\u0437\u0434\u0443`; }
+  else { hint.className='prog-hint ok'; hint.textContent='\u2713 \u0414\u043e\u0441\u044f\u0433\u043d\u0443\u0442\u043e \u043c\u0456\u043d\u0456\u043c\u0443\u043c \u2014 \u043c\u043e\u0436\u043d\u0430 \u0432\u0438\u043a\u043b\u0438\u043a\u0430\u0442\u0438 \u043c\u0430\u0439\u0441\u0442\u0440\u0430!'; }
+
+  suggestBundle(subtotal);
+  return {total, count, subtotal};
+}
+
+/* ===== smart bundle suggestion ===== */
+function suggestBundle(subtotal){
+  const b=$('#bundle'); const q=state.qty;
+  const sofas=(q.sofa_straight||0)+(q.sofa_corner||0)+(q.sofa_corner3||0)+(q.sofa_u||0);
+  const chairs=q.armchair||0;
+  let msg='';
+  if(sofas>=1 && chairs>=2){ msg=`\u0414\u0438\u0432\u0430\u043d + ${chairs} \u043a\u0440\u0456\u0441\u043b\u0430 \u2014 \u0446\u0435 <b>\u043f\u0430\u043a\u0435\u0442 \u00ab\u0421\u0456\u043c'\u044f\u00bb \u0432\u0456\u0434 4 900 \u20b4</b> \u0437 \u041f\u0440\u0435\u043c\u0456\u0443\u043c-\u0441\u0443\u0448\u043a\u043e\u044e. \u0427\u0430\u0441\u0442\u043e \u0432\u0438\u0445\u043e\u0434\u0438\u0442\u044c \u0432\u0438\u0433\u0456\u0434\u043d\u0456\u0448\u0435!`; }
+  else if(subtotal>=6000){ msg=`\u0411\u0430\u0433\u0430\u0442\u043e \u043f\u043e\u0437\u0438\u0446\u0456\u0439? <b>\u041f\u0430\u043a\u0435\u0442 \u00ab\u0413\u0435\u043d\u0435\u0440\u0430\u043b\u044c\u043d\u0430\u00bb \u0432\u0456\u0434 6 900 \u20b4</b>: \u0441\u0443\u0448\u043a\u0430 \u0443 \u043f\u043e\u0434\u0430\u0440\u0443\u043d\u043e\u043a + \u0437\u0430\u0445\u0438\u0441\u0442 \u0442\u043a\u0430\u043d\u0438\u043d\u0438 \u221250%.`; }
+  else if(sofas>=1 && subtotal<MIN_ORDER){ msg=`\u0414\u043e\u0434\u0430\u0439\u0442\u0435 \u043a\u0440\u0456\u0441\u043b\u043e \u0447\u0438 \u043c\u0430\u0442\u0440\u0430\u0446 \u2014 \u0456 \u0437\u0431\u0435\u0440\u0456\u0442\u044c <b>\u0432\u0438\u0433\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0441</b> \u0432 \u043e\u0434\u0438\u043d \u0432\u0438\u0457\u0437\u0434.`; }
+  if(msg){ $('#bundleTxt').innerHTML=msg; b.classList.add('show'); } else b.classList.remove('show');
+}
+
+/* ===== quantity handlers ===== */
+function setQty(k,v){ state.qty[k]=Math.max(0,v); const el=$(`[data-q="${k}"]`); if(el)el.textContent=state.qty[k]; calc(); }
+
+document.addEventListener('click',e=>{
+  const cat=e.target.closest('[data-cat]'); if(cat){ toggleCat(+cat.dataset.cat); haptic('light'); return; }
+  if(e.target.dataset.inc!==undefined){ setQty(e.target.dataset.inc,(state.qty[e.target.dataset.inc]||0)+1); haptic('light'); recalcHeights(); }
+  if(e.target.dataset.dec!==undefined){ setQty(e.target.dataset.dec,(state.qty[e.target.dataset.dec]||0)-1); haptic('light'); recalcHeights(); }
+});
+document.addEventListener('input',e=>{
+  if(e.target.dataset.inp!==undefined){ setQty(e.target.dataset.inp, parseInt(e.target.value)||0); }
+});
+function recalcHeights(){ CATS.forEach((c,ci)=>{const cat=$(`[data-cat="${ci}"]`).parentElement; if(cat.classList.contains('open'))$(`[data-list="${ci}"]`).style.maxHeight=$(`[data-list="${ci}"]`).scrollHeight+'px';}); }
+
+/* tariff & urgency */
+$('#tariff').addEventListener('click',e=>{ const b=e.target.closest('[data-t]'); if(!b)return; state.tariff=b.dataset.t; [...$('#tariff').children].forEach(x=>x.classList.toggle('on',x===b)); haptic('light'); calc(); });
+$('#urg').addEventListener('click',e=>{ const b=e.target.closest('[data-u]'); if(!b)return; state.urg=+b.dataset.u; [...$('#urg').children].forEach(x=>x.classList.toggle('on',x===b)); haptic('light'); calc(); });
+
+/* promo */
+$('#promoBtn').addEventListener('click',()=>{
+  const code=$('#promo').value.trim().toUpperCase(); const m=$('#promoMsg');
+  if(PROMOS[code]){ state.promo=code; m.className='promo-msg ok'; m.textContent='\u2713 '+PROMOS[code].txt; haptic('ok'); }
+  else { state.promo=null; m.className='promo-msg bad'; m.textContent='\u041a\u043e\u0434 \u043d\u0435 \u0437\u043d\u0430\u0439\u0434\u0435\u043d\u043e. \u0421\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 CLEAN10'; haptic('rigid'); }
+  calc();
+});
+
+/* ===== before/after slider ===== */
+(function(){
+  const ba=$('#ba'), h=$('#baHandle'), bf=$('#baBefore'); let drag=false;
+  const move=x=>{ const r=ba.getBoundingClientRect(); let p=(x-r.left)/r.width*100; p=Math.max(2,Math.min(98,p)); h.style.left=p+'%'; bf.style.clipPath=`inset(0 ${100-p}% 0 0)`; };
+  const start=e=>{drag=true;}; const end=()=>drag=false;
+  ba.addEventListener('mousedown',e=>{start(e);move(e.clientX);}); window.addEventListener('mousemove',e=>drag&&move(e.clientX)); window.addEventListener('mouseup',end);
+  ba.addEventListener('touchstart',e=>{start(e);move(e.touches[0].clientX);},{passive:true}); ba.addEventListener('touchmove',e=>{if(drag)move(e.touches[0].clientX);},{passive:true}); window.addEventListener('touchend',end);
+})();
+
+/* ===== countdown timer (to 21:00) ===== */
+(function(){
+  function tick(){
+    const now=new Date(); const end=new Date(now); end.setHours(21,0,0,0);
+    let d=Math.max(0,(end-now)/1000);
+    if(d<=0){ $('#timer').textContent='\u0437\u0430\u0432\u0442\u0440\u0430'; return; }
+    const hh=String(Math.floor(d/3600)).padStart(2,'0'), mm=String(Math.floor(d%3600/60)).padStart(2,'0'), ss=String(Math.floor(d%60)).padStart(2,'0');
+    $('#timer').textContent=`${hh}:${mm}:${ss}`;
+  } tick(); setInterval(tick,1000);
+})();
+
+/* ===== live social-proof toasts ===== */
+(function(){
+  const data=[['\u041e\u041a','\u041e\u043b\u044c\u0433\u0430','\u0434\u0438\u0432\u0430\u043d, \u041e\u0431\u043e\u043b\u043e\u043d\u044c'],['\u0414\u041c','\u0414\u043c\u0438\u0442\u0440\u043e','\u043a\u0438\u043b\u0438\u043c, \u041f\u0435\u0447\u0435\u0440\u0441\u044c\u043a'],['\u0406\u0412','\u0406\u0440\u0438\u043d\u0430','\u043c\u0430\u0442\u0440\u0430\u0446, \u041f\u043e\u0437\u043d\u044f\u043a\u0438'],['\u0421\u041f','\u0421\u0435\u0440\u0433\u0456\u0439','\u043a\u0440\u0456\u0441\u043b\u0430, \u0422\u0440\u043e\u0454\u0449\u0438\u043d\u0430'],['\u041d\u0422','\u041d\u0430\u0442\u0430\u043b\u044f','\u0434\u0438\u0432\u0430\u043d \u043a\u0443\u0442\u043e\u0432\u0438\u0439, \u041b\u0456\u0432\u043e\u0431\u0435\u0440\u0435\u0436\u043d\u0430'],['\u0410\u041a','\u0410\u043d\u0434\u0440\u0456\u0439','\u043a\u0438\u043b\u0438\u043c \u0448\u0435\u0433\u0433\u0456, \u0412\u0438\u043d\u043e\u0433\u0440\u0430\u0434\u0430\u0440']];
+  const mins=['\u0449\u043e\u0439\u043d\u043e','2 \u0445\u0432 \u0442\u043e\u043c\u0443','5 \u0445\u0432 \u0442\u043e\u043c\u0443','8 \u0445\u0432 \u0442\u043e\u043c\u0443','12 \u0445\u0432 \u0442\u043e\u043c\u0443'];
+  function show(){
+    const d=data[Math.floor(Math.random()*data.length)]; const m=mins[Math.floor(Math.random()*mins.length)];
+    $('#toastAv').textContent=d[0];
+    $('#toastTxt').innerHTML=`<b>${d[1]}</b> \u0437\u0430\u043c\u043e\u0432\u0438\u0432(\u043b\u0430) \u0447\u0438\u0441\u0442\u043a\u0443<br><span>${d[2]} \u00b7 ${m}</span>`;
+    $('#toast').classList.add('show'); setTimeout(()=>$('#toast').classList.remove('show'),4200);
+  }
+  setTimeout(show,6000); setInterval(show,16000);
+  // decreasing slots for scarcity
+  let slots=3; setInterval(()=>{ if(slots>1 && Math.random()>0.6){ slots--; $('#slotsN').textContent=slots+(slots===1?' \u0441\u043b\u043e\u0442':' \u0441\u043b\u043e\u0442\u0438'); } },45000);
+})();
+
+/* ===== order sheet ===== */
+function buildSummary(){
+  const {total,count,subtotal}=calc(); const box=$('#summ'); let rows='';
+  for(const k in state.qty){ const q=state.qty[k]; if(q>0){ rows+=`<div class="sr"><span>${NAMES[k]} \u00d7${q}${PRICE[k].u==='\u043c\u00b2'?' \u043c\u00b2':''}</span><b>${fmt(PRICE[k][state.tariff]*q)} \u20b4</b></div>`; } }
+  if(!rows) rows='<div class="sr"><span>\u0429\u0435 \u043d\u0456\u0447\u043e\u0433\u043e \u043d\u0435 \u043e\u0431\u0440\u0430\u043d\u043e</span></div>';
+  const tarTxt = state.tariff==='p'?'\u041f\u0440\u0435\u043c\u0456\u0443\u043c \u0456\u0437 \u0441\u0443\u0448\u043a\u043e\u044e':'\u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442';
+  rows+=`<div class="sr"><span>\u0422\u0430\u0440\u0438\u0444</span><b>${tarTxt}</b></div>`;
+  if(state.urg) rows+=`<div class="sr"><span>\u0422\u0435\u0440\u043c\u0456\u043d\u043e\u0432\u0456\u0441\u0442\u044c \u00ab\u0441\u044c\u043e\u0433\u043e\u0434\u043d\u0456\u00bb</span><b>+25%</b></div>`;
+  if(state.promo) rows+=`<div class="sr"><span>\u041f\u0440\u043e\u043c\u043e\u043a\u043e\u0434 ${state.promo}</span><b>${PROMOS[state.promo].txt}</b></div>`;
+  rows+=`<div class="sr tt"><span>\u0420\u0430\u0437\u043e\u043c</span><span>${fmt(total)} \u20b4</span></div>`;
+  box.innerHTML=rows;
+}
+$('#orderBtn').addEventListener('click',()=>{ haptic('medium'); buildSummary(); $('#sheet').classList.add('show'); });
+$('#cancelBtn').addEventListener('click',()=>$('#sheet').classList.remove('show'));
+$('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet')$('#sheet').classList.remove('show'); });
+// package quick order
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-pk]'); if(!b)return; haptic('medium'); state.pkg=b.dataset.pk; buildSummary(); $('#summ').insertAdjacentHTML('afterbegin',`<div class="sr"><span>\u041e\u0431\u0440\u0430\u043d\u0438\u0439 \u043f\u0430\u043a\u0435\u0442</span><b>${b.dataset.pk}</b></div>`); $('#sheet').classList.add('show'); });
+
+/* ===== send order via Telegram ===== */
+$('#sendBtn').addEventListener('click',()=>{
+  const name=$('#fName').value.trim(), phone=$('#fPhone').value.trim();
+  if(!phone){ haptic('rigid'); alert('\u0412\u043a\u0430\u0436\u0456\u0442\u044c, \u0431\u0443\u0434\u044c \u043b\u0430\u0441\u043a\u0430, \u0442\u0435\u043b\u0435\u0444\u043e\u043d \ud83d\udcde'); return; }
+  const {total,count}=calc();
+  const items=Object.entries(state.qty).filter(([k,q])=>q>0).map(([k,q])=>`${NAMES[k]} \u00d7${q}`);
+  const payload={
+    type:'order', name, phone, address:$('#fAddr').value.trim(), comment:$('#fComment').value.trim(),
+    tariff: state.tariff==='p'?'\u041f\u0440\u0435\u043c\u0456\u0443\u043c':'\u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442', urgent: !!state.urg, promo: state.promo,
+    package: state.pkg||null, items, total: Math.round(total), count,
+    user: tg?.initDataUnsafe?.user||null
+  };
+  haptic('ok');
+  if(tg && tg.sendData){
+    tg.sendData(JSON.stringify(payload));   // -> bot receives web_app_data
+    tg.close();
+  } else {
+    // fallback: open Telegram chat with prefilled text
+    const txt=encodeURIComponent(`\ud83e\uddfe \u0417\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f Clean Hub\n\u0406\u043c'\u044f: ${name}\n\u0422\u0435\u043b: ${phone}\n\u0422\u0430\u0440\u0438\u0444: ${payload.tariff}${payload.urgent?' (\u0441\u044c\u043e\u0433\u043e\u0434\u043d\u0456 +25%)':''}\n\u041f\u043e\u0437\u0438\u0446\u0456\u0457: ${items.join(', ')||payload.package}\n\u0420\u0430\u0437\u043e\u043c: ${fmt(total)} \u20b4`);
+    window.open('https://t.me/CleanHubBot?text='+txt,'_blank');
+    alert('\u0417\u0430\u044f\u0432\u043a\u0443 \u0441\u0444\u043e\u0440\u043c\u043e\u0432\u0430\u043d\u043e! \u0412\u0456\u0434\u043a\u0440\u0438\u0432\u0430\u0454\u043c\u043e \u0447\u0430\u0442 \u0434\u043b\u044f \u0432\u0456\u0434\u043f\u0440\u0430\u0432\u043a\u0438.');
+    $('#sheet').classList.remove('show');
+  }
+});
+
+/* ===== gallery lightbox ===== */
+(function(){
+  const lb=$('#lb'), img=$('#lbImg');
+  $('#gal').addEventListener('click',e=>{ if(e.target.tagName==='IMG'){ img.src=e.target.src; lb.classList.add('show'); haptic('light'); }});
+  lb.addEventListener('click',()=>lb.classList.remove('show'));
+})();
+
+/* init */
+buildCats(); calc();
+</script>
+</body>
+</html>
